@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>goober-cats</title>
+</head>
+<body style="display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background-color: #222;">
+
+    <audio id="meowSound" src="meowrgh.mp3"></audio>
+
+    <img src="maw.png" alt="Drooling Cats" id="catImage" style="cursor: pointer; max-width: 500px; border-radius: 10px;">
+
+    <script>
+        const catImg = document.getElementById('catImage');
+        const meowSound = document.getElementById('meowSound');
+
+        catImg.addEventListener('click', () => {
+            const spamMeow = new Audio('meowrgh.mp3');
+            spamMeow.play();
+        });
+    </script>
+</body>
+</html>
