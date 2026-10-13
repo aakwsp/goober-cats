@@ -1,73 +1,475 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>GROUP NAME</title>
-  <style>
-    body { font-family: system-ui, sans-serif; max-width: 760px; margin: 2rem auto; padding: 0 1rem; line-height: 1.6; color: #222; }
-    h1 { margin-bottom: 0; }
-    .sub { color: #666; margin-top: 0.2rem; }
-    h2 { border-bottom: 1px solid #ddd; padding-bottom: 0.2rem; margin-top: 2rem; }
-    a { color: #0645ad; }
-    .pending { color: #999; }
-    footer { margin-top: 3rem; font-size: 0.9rem; color: #666; border-top: 1px solid #ddd; padding-top: 1rem; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>goober cats</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Space+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+    <style>
+        /* color tokens (same as aakwsp.xyz) */
+        :root {
+            --bg: #141216;
+            --bg-card: #27232b;
+            --text: #d8cab8;
+            --text-muted: #8a7e8e;
+            --text-dim: #504856;
+            --rule: #211e26;
+
+            --topbar-h: 36px;
+            --nav-h: 36px;
+            --bar-w: 8px;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            border-radius: 0;
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.8125rem;
+            line-height: 1.8;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        ::selection {
+            background: var(--text);
+            color: var(--bg);
+        }
+
+        /* ── topbar (fixed, inverted, like the portfolio) ── */
+        .topbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 200;
+            height: var(--topbar-h);
+            background: var(--text);
+            border-bottom: 0.5px solid var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 0.875rem;
+            padding: 0 1.25rem;
+            font-size: 0.5625rem;
+            letter-spacing: 0.14em;
+        }
+
+        .topbar span {
+            color: var(--bg);
+            white-space: nowrap;
+        }
+
+        .tbar-line {
+            flex: 1;
+            height: 0.5px;
+            background: var(--bg-card);
+        }
+
+        .tbar-diamond {
+            appearance: none;
+            background: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            width: 16px;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .tbar-diamond div {
+            width: 8px;
+            height: 8px;
+            background: var(--bg);
+            transform: rotate(45deg);
+        }
+
+        .tbar-diamond.spin div {
+            animation: diamond-spin 0.55s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        @keyframes diamond-spin {
+            from {
+                transform: rotate(45deg);
+            }
+
+            to {
+                transform: rotate(405deg);
+            }
+        }
+
+        /* ── nav (fixed under the topbar, like the portfolio) ── */
+        .nav {
+            position: fixed;
+            top: var(--topbar-h);
+            left: 0;
+            right: 0;
+            z-index: 199;
+            height: var(--nav-h);
+            background: var(--bg);
+            border-bottom: 0.5px solid var(--rule);
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            padding: 0 1.25rem 0 calc(var(--bar-w) + 1.25rem);
+        }
+
+        .nav a {
+            font-size: 0.5625rem;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            color: var(--text-muted);
+        }
+
+        .nav a.active,
+        .nav a:hover {
+            color: var(--text);
+        }
+
+        section[id] {
+            scroll-margin-top: calc(var(--topbar-h) + var(--nav-h) + 1rem);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* ── quad-color bar, full page height on the left ── */
+        .quad-bar {
+            position: fixed;
+            top: calc(var(--topbar-h) + var(--nav-h));
+            bottom: 0;
+            left: 0;
+            width: var(--bar-w);
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+        }
+
+        .quad-bar span {
+            flex: 1;
+            display: block;
+        }
+
+        /* ── page content ── */
+        main {
+            max-width: 760px;
+            margin: 0 auto;
+            padding: calc(var(--topbar-h) + var(--nav-h) + 4rem) 1.5rem 7rem calc(var(--bar-w) + 1.5rem);
+        }
+
+        .eyebrow {
+            font-size: 0.5625rem;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin: 0 0 1.75rem;
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-family: 'DM Serif Display', Georgia, serif;
+            font-weight: 400;
+            margin: 0;
+        }
+
+        h1 {
+            font-size: clamp(2.5rem, 6.5vw, 4.5rem);
+            line-height: 1.05;
+            letter-spacing: -0.01em;
+            margin-bottom: 1.5rem;
+        }
+
+        .sub {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            margin: 0;
+        }
+
+        .hero {
+            padding-bottom: 3rem;
+            border-bottom: 0.5px solid var(--rule);
+        }
+
+        h2 {
+            font-size: 1.6rem;
+            margin-top: 3rem;
+            padding-bottom: 0.4rem;
+            border-bottom: 0.5px solid var(--rule);
+        }
+
+        h3 {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6875rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin: 1.75rem 0 0.25rem;
+        }
+
+        p {
+            margin: 0.4rem 0;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0.75rem 0;
+        }
+
+        li {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.55rem 0;
+            border-bottom: 0.5px solid var(--rule);
+        }
+
+        li::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: var(--text);
+            flex-shrink: 0;
+        }
+
+        li.pending {
+            color: var(--text-dim);
+        }
+
+        li.pending::before {
+            background: var(--text-dim);
+        }
+
+        .label {
+            font-size: 0.5625rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--text-dim);
+        }
+
+        a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 120ms ease;
+        }
+
+        a:hover {
+            color: var(--text);
+        }
+
+        footer {
+            margin-top: 4rem;
+            padding-top: 1rem;
+            border-top: 0.5px solid var(--rule);
+            font-size: 0.5625rem;
+            letter-spacing: 0.15em;
+            color: var(--text-dim);
+        }
+
+        /* ── meow cat button (bottom-right corner) ── */
+        .meow-cat {
+            position: fixed;
+            bottom: 1rem;
+            right: 1rem;
+            z-index: 150;
+            width: 90px;
+            height: 90px;
+            padding: 0;
+            border: 0.5px solid var(--text);
+            border-radius: 50%;
+            overflow: hidden;
+            cursor: pointer;
+            background: var(--bg-card);
+            transition: transform 0.15s ease;
+        }
+
+        .meow-cat img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .meow-cat:hover {
+            transform: scale(1.08);
+        }
+
+        .meow-cat:active {
+            transform: scale(0.92);
+        }
+
+        .meow-cat.meowing {
+            animation: wiggle 0.4s ease;
+        }
+
+        @keyframes wiggle {
+
+            0%,
+            100% {
+                transform: rotate(0deg);
+            }
+
+            25% {
+                transform: rotate(-12deg);
+            }
+
+            75% {
+                transform: rotate(12deg);
+            }
+        }
+
+        /* ── mobile: bar moves under the topbar, horizontal ── */
+        @media (max-width: 768px) {
+            .quad-bar {
+                flex-direction: row;
+                bottom: auto;
+                right: 0;
+                width: auto;
+                height: 4px;
+            }
+
+            main {
+                padding-left: 1.25rem;
+                padding-right: 1.25rem;
+            }
+
+            .nav {
+                gap: 1.25rem;
+                padding-left: 1.25rem;
+            }
+        }
+    </style>
 </head>
+
 <body>
 
-  <h1>GOOBER CATS</h1>
-  <p class="sub">Group 26</p>
+    <header class="topbar">
+        <span>group 26 // goober cats</span>
+        <div class="tbar-line"></div>
+        <button class="tbar-diamond" id="diamond" type="button" aria-label="spin">
+            <div></div>
+        </button>
+    </header>
 
-  <h2>Members</h2>
-  <ul>
-    <li>Amro Shanaa</li>
-    <li>Julia Lukaszun</li>
-    <li>Mark Talinio</li>
-    <li>Moshi Moshiri</li>
-    <li>Nathan Beard</li>
-    <li>Tim Rostorhuiev</li>
-  </ul>
-  <p><strong>Group leader:</strong> Moshi</p>
-  <p><strong>Presenter 1:</strong> </p>
-  <p><strong>Presenter 2:</strong> </p>
+    <nav class="nav" aria-label="primary navigation">
+        <a href="#members">members</a>
+        <a href="#links">links</a>
+        <a href="#assignments">assignments</a>
+    </nav>
 
-  <h2>Project</h2>
-  <p>TBD</p>
+    <div class="quad-bar" aria-hidden="true">
+        <span style="background:#f2bdc9"></span>
+        <span style="background:#b8c8f0"></span>
+        <span style="background:#b8dcc8"></span>
+        <span style="background:#c8c0a8"></span>
+    </div>
 
-  <h2>Project Links</h2>
-  <ul>
-    <li><a href="https://github.com/aakwsp/goober-cats">GitHub Repository</a></li>
-    <li><a href="#">Jira Board</a></li>
-    <li><a href="#">Confluence Space</a></li>
-  </ul>
+    <main>
 
-  <h2>Deliverables</h2>
+        <section class="hero">
+            <p class="eyebrow">// cisc 322/326 · fall 2026</p>
+            <h1>goober cats.</h1>
+            <p class="sub">software architecture term project · queen's university</p>
+        </section>
 
-  <h3>A1</h3>
-  <ul>
-    <li class="pending">Report (coming soon)</li>
-    <li class="pending">Slides (coming soon)</li>
-    <li class="pending">Presentation (coming soon)</li>
-  </ul>
+        <section id="members">
+            <h2>members</h2>
+            <ul>
+                <li>amro shanaah</li>
+                <li>julia lukaszun <span class="label">presenter</span></li>
+                <li>mark talinio</li>
+                <li>matthew wong</li>
+                <li>moshi moshiri <span class="label">group leader</span></li>
+                <li>nathan beard <span class="label">presenter</span></li>
+                <li>tim rostorhuiev</li>
+            </ul>
+        </section>
 
-  <h3>A2</h3>
-  <ul>
-    <li class="pending">Report (coming soon)</li>
-    <li class="pending">Slides (coming soon)</li>
-    <li class="pending">Presentation (coming soon)</li>
-  </ul>
+        <section id="links">
+            <h2>links</h2>
+            <ul>
+                <li><a href="https://github.com/aakwsp/goober-cats">github repository</a></li>
+            </ul>
+        </section>
 
-  <h3>A3</h3>
-  <ul>
-    <li class="pending">Report (coming soon)</li>
-    <li class="pending">Slides (coming soon)</li>
-    <li class="pending">Presentation (coming soon)</li>
-  </ul>
+        <section id="assignments">
+            <h2>assignments</h2>
 
-  <footer>
-    CISC 326 - Queen's University, Fall 2026
-  </footer>
+            <h3>a1 · conceptual architecture</h3>
+            <ul>
+                <li><a href="a1/report.pdf">report (pdf)</a></li>
+                <li><a href="a1/slides.pdf">slides (pdf)</a></li>
+                <li><a href="https://www.youtube.com/watch?v=TgZfyRJAR5o">presentation video</a></li>
+            </ul>
+
+            <h3>a2 · concrete architecture</h3>
+            <ul>
+                <li class="pending">report (coming soon)</li>
+                <li class="pending">slides (coming soon)</li>
+                <li class="pending">presentation (coming soon)</li>
+            </ul>
+
+            <h3>a3 · architectural enhancement</h3>
+            <ul>
+                <li class="pending">report (coming soon)</li>
+                <li class="pending">slides (coming soon)</li>
+                <li class="pending">presentation (coming soon)</li>
+            </ul>
+
+        </section>
+
+        <footer>cisc 322/326 · queen's university · fall 2026</footer>
+
+    </main>
+
+    <button class="meow-cat" id="meowCat" type="button" aria-label="meowrgh..." title="meowrgh...">
+        <img src="assets/maw.png" alt="two goober cats">
+    </button>
+
+    <script>
+        const cat = document.getElementById('meowCat');
+
+        function meow() {
+            new Audio('assets/meowrgh.mp3').play();
+            cat.classList.remove('meowing');
+            void cat.offsetWidth; // restart the wiggle animation
+            cat.classList.add('meowing');
+        }
+
+        cat.addEventListener('click', meow);
+
+        // highlight the nav link for the section on screen
+        const navLinks = document.querySelectorAll('.nav a');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((e) => {
+                if (!e.isIntersecting) return;
+                navLinks.forEach((a) => a.classList.toggle('active', a.getAttribute('href') === '#' + e.target.id));
+            });
+        }, {rootMargin: '-15% 0px -70% 0px', threshold: 0});
+        document.querySelectorAll('section[id]').forEach((sec) => observer.observe(sec));
+
+        // spinning diamond, same as the portfolio topbar
+        const diamond = document.getElementById('diamond');
+        diamond.addEventListener('click', () => {
+            if (diamond.classList.contains('spin')) return;
+            diamond.classList.add('spin');
+            setTimeout(() => diamond.classList.remove('spin'), 560);
+        });
+    </script>
 
 </body>
+
 </html>
